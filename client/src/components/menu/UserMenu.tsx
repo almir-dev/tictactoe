@@ -2,6 +2,7 @@ import Auth from "../../service/auth/Auth";
 import React, { useCallback, useState } from "react";
 import { IconButton, Menu, MenuItem } from "@mui/material";
 import { AccountCircle } from "@mui/icons-material";
+import { useHistory } from "react-router-dom";
 
 export interface UserMenuProps {
   /** Authentication service. */
@@ -9,6 +10,7 @@ export interface UserMenuProps {
 }
 
 export function UserMenu({ auth }: UserMenuProps) {
+  const history = useHistory();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const handleMenuOpen = useCallback((event: React.MouseEvent<HTMLElement>) => {
@@ -23,6 +25,11 @@ export function UserMenu({ auth }: UserMenuProps) {
     auth.logout();
     handleMenuClose();
   }, [auth, handleMenuClose]);
+
+  const handleProfileClick = useCallback(() => {
+    history.push(`/profile`);
+    handleMenuClose();
+  }, [history, handleMenuClose]);
 
   return (
     <>
@@ -51,7 +58,7 @@ export function UserMenu({ auth }: UserMenuProps) {
         open={Boolean(anchorEl)}
         onClose={handleMenuClose}
       >
-        <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+        <MenuItem onClick={handleProfileClick}>Profile</MenuItem>
         <MenuItem onClick={handleLogout}>Logout</MenuItem>
       </Menu>
     </>

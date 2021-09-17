@@ -4,6 +4,7 @@ import createHistory from "history/createBrowserHistory";
 import Auth from "../service/auth/Auth";
 import { Route, Router } from "react-router-dom";
 import { ApplicationLoading } from "./ApplicationLoading";
+import { ProfilePage } from "./profile/ProfilePage";
 
 const history = createHistory();
 const auth = new Auth(history);
@@ -20,7 +21,7 @@ export function App() {
     <Router history={history}>
       <div>
         <Route
-          path="/callback"
+          path={"/callback"}
           render={(props) => {
             handleAuthentication(props);
             return <ApplicationLoading />;
@@ -29,6 +30,12 @@ export function App() {
         <Route
           render={(props) => {
             return <LandingPage auth={auth} {...props} />;
+          }}
+        />
+        <Route
+          path={"/profile"}
+          render={() => {
+            return <ProfilePage />;
           }}
         />
       </div>
