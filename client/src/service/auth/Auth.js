@@ -62,6 +62,9 @@ export default class Auth {
     this.idToken = authResult.idToken;
     this.expiresAt = expiresAt;
 
+    console.log('WWW foo', authResult);
+
+
     // navigate to the home route
     this.history.replace('/');
   }
