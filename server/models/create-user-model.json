@@ -3,7 +3,7 @@
   "title": "group",
   "type": "object",
   "properties": {
-    "name": {
+    "userName": {
       "type": "string"
     },
     "avatar": {
@@ -11,7 +11,7 @@
     }
   },
   "required": [
-    "name",
+    "userName",
     "avatar"
   ],
   "additionalProperties": false

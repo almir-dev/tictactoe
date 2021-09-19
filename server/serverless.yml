@@ -26,7 +26,7 @@ functions:
   Auth:
     handler: src/lambda/auth/auth0Authorizer.handler
 
-  CreateTodo:
+  CreateUser:
     handler: src/lambda/http/createUser.handler
     events:
       - http:
@@ -34,9 +34,6 @@ functions:
           path: user
           cors: true
           authorizer: Auth
-          request:
-            schema:
-              application/json: ${file(models/create-user-model.json)}
     iamRoleStatements:
       - Effect: Allow
         Action:
