@@ -61,6 +61,8 @@ resources:
             AttributeType: S
           - AttributeName: userName
             AttributeType: S
+          - AttributeName: avatar
+            AttributeType: S
         KeySchema:
           - AttributeName: userId
             KeyType: HASH
