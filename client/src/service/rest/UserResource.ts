@@ -1,7 +1,6 @@
 import Axios from "axios";
 import { apiEndpoint } from "../auth/config";
 import { auth } from "../../components/App";
-import * as buffer from "buffer";
 
 export interface User {
   userId: string;

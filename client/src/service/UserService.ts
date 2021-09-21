@@ -1,5 +1,5 @@
 import { UserStore } from "./UserStore";
-import { AvatarUpdate, UserResource } from "./rest/UserResource";
+import { UserResource } from "./rest/UserResource";
 
 class UserServiceImpl {
   async updateUserAvatar(file: Buffer): Promise<string> {

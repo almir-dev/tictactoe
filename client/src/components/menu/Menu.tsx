@@ -30,11 +30,11 @@ function Headline({ auth }: { auth: Auth }) {
 
   const handleHomeNavigation = useCallback(() => {
     history.push("/");
-  }, []);
+  }, [history]);
 
   const handleDashboardNavigation = useCallback(() => {
     history.push("/dashboard");
-  }, []);
+  }, [history]);
 
   return (
     <Typography
@@ -68,8 +68,9 @@ function DashboardMenuItem({
       onClick={() => {}}
       color="inherit"
       sx={{ ml: 2 }}
+      onClickCapture={onClick}
     >
-      <DashboardCustomizeSharpIcon onClick={onClick} />
+      <DashboardCustomizeSharpIcon />
     </IconButton>
   );
 }
