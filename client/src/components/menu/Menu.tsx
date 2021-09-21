@@ -2,8 +2,9 @@ import { AppBar, Box, Toolbar, Typography } from "@mui/material";
 
 import Button from "@mui/material/Button";
 import Auth from "../../service/auth/Auth";
-import React from "react";
+import React, { useCallback } from "react";
 import { UserMenu } from "./UserMenu";
+import { useHistory } from "react-router-dom";
 
 export interface MenuBarProps {
   /** Authentication service. */
@@ -24,9 +25,19 @@ export function MenuBar({ auth }: MenuBarProps) {
 }
 
 function Headline() {
+  const history = useHistory();
+
+  const handleNavigation = useCallback(() => {
+    history.push("/");
+  }, []);
+
   return (
-    <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-      Tic Tac Toe
+    <Typography
+      variant="h6"
+      component="div"
+      sx={{ flexGrow: 1, cursor: "pointer" }}
+    >
+      <span onClick={handleNavigation}>Tic Tac Toe</span>
     </Typography>
   );
 }
