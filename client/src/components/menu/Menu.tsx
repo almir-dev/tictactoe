@@ -1,10 +1,11 @@
-import { AppBar, Box, Toolbar, Typography } from "@mui/material";
+import { AppBar, Box, IconButton, Toolbar, Typography } from "@mui/material";
 
 import Button from "@mui/material/Button";
 import Auth from "../../service/auth/Auth";
 import React, { useCallback } from "react";
 import { UserMenu } from "./UserMenu";
 import { useHistory } from "react-router-dom";
+import DashboardCustomizeSharpIcon from "@mui/icons-material/DashboardCustomizeSharp";
 
 export interface MenuBarProps {
   /** Authentication service. */
@@ -16,7 +17,7 @@ export function MenuBar({ auth }: MenuBarProps) {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar>
-          <Headline />
+          <Headline auth={auth} />
           <LogAction auth={auth} />
         </Toolbar>
       </AppBar>
@@ -24,11 +25,15 @@ export function MenuBar({ auth }: MenuBarProps) {
   );
 }
 
-function Headline() {
+function Headline({ auth }: { auth: Auth }) {
   const history = useHistory();
 
-  const handleNavigation = useCallback(() => {
+  const handleHomeNavigation = useCallback(() => {
     history.push("/");
+  }, []);
+
+  const handleDashboardNavigation = useCallback(() => {
+    history.push("/dashboard");
   }, []);
 
   return (
@@ -37,8 +42,35 @@ function Headline() {
       component="div"
       sx={{ flexGrow: 1, cursor: "pointer" }}
     >
-      <span onClick={handleNavigation}>Tic Tac Toe</span>
+      <span onClick={handleHomeNavigation}>Tic Tac Toe</span>
+      <DashboardMenuItem auth={auth} onClick={handleDashboardNavigation} />
     </Typography>
+  );
+}
+
+function DashboardMenuItem({
+  auth,
+  onClick,
+}: {
+  auth: Auth;
+  onClick: () => void;
+}) {
+  if (!auth.isAuthenticated()) {
+    return null;
+  }
+
+  return (
+    <IconButton
+      size="large"
+      aria-label="dahsboard"
+      aria-controls="menu-appbar"
+      aria-haspopup="true"
+      onClick={() => {}}
+      color="inherit"
+      sx={{ ml: 2 }}
+    >
+      <DashboardCustomizeSharpIcon onClick={onClick} />
+    </IconButton>
   );
 }
 

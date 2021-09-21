@@ -31,11 +31,6 @@ class UserStoreImpl {
   setUserAvatar(url: string) {
     return sessionStorage.setItem("avatar", url);
   }
-
-  isLoggedIn() {
-    console.log("WWW USERNAME", sessionStorage);
-    return !sessionStorage.getItem("userId");
-  }
 }
 
 export const UserStore = new UserStoreImpl();

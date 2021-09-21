@@ -7,6 +7,7 @@ import { Route, Router } from "react-router-dom";
 import { ApplicationLoading } from "./ApplicationLoading";
 import { ProfilePage } from "./profile/ProfilePage";
 import { Box, Typography } from "@mui/material";
+import { Dashboard } from "./dahsboard/Dashboard";
 
 const history = createHistory();
 export const auth = new Auth(history);
@@ -45,6 +46,16 @@ export function App() {
           }}
         />
       </div>
+      <Route
+        path={"/dashboard"}
+        render={() => {
+          return (
+            <SecurePage auth={auth}>
+              <Dashboard />
+            </SecurePage>
+          );
+        }}
+      />
     </Router>
   );
 }
