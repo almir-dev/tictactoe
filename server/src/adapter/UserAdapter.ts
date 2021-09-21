@@ -1,8 +1,8 @@
 import * as AWS from "aws-sdk";
-import { DocumentClient } from "aws-sdk/clients/dynamodb";
-import { User } from "./User";
-import { CreateUserRequest } from "../requests/CreateTodoRequest";
 import { AWSError } from "aws-sdk";
+import { DocumentClient } from "aws-sdk/clients/dynamodb";
+import { CreateUserRequest } from "../requests/CreateUserRequest";
+import { User } from "../models/User";
 
 const AWSXRay = require("aws-xray-sdk");
 const XAWS = AWSXRay.captureAWS(AWS);
@@ -14,9 +14,7 @@ export class UserAdapter {
   private static readonly S3 = new XAWS.S3({ signatureVersion: "v4" });
   private static readonly AVATAR_BUCKET = process.env.AVATAR_BUCKET;
 
-  public static async createUser(
-    createUserRequest: CreateUserRequest
-  ): Promise<User> {
+  static async createUser(createUserRequest: CreateUserRequest): Promise<User> {
     const params = {
       TableName: this.USER_TABLE,
       Item: createUserRequest,
@@ -36,7 +34,7 @@ export class UserAdapter {
     return attachmentUrl;
   }
 
-  public static async updateUserAvatar(
+  static async updateUserAvatar(
     userId: string,
     userName: string,
     avatarId: string
@@ -58,6 +56,20 @@ export class UserAdapter {
       },
       handleError
     );
+  }
+
+  static async getUser(userId: string): Promise<User> {
+    const result = this.DOCUMENT_CLIENT.query({
+      TableName: this.USER_TABLE,
+      KeyConditionExpression: "userId = :userId",
+      ExpressionAttributeValues: {
+        ":userId": userId,
+      },
+    }).promise();
+
+    return result.then((result) => {
+      return result.Items[0] as unknown as User;
+    });
   }
 
   private static createDynamoDBClient() {

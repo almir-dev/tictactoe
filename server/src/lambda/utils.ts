@@ -15,9 +15,24 @@ export function getUserId(event: APIGatewayProxyEvent): string {
   return parseUserId(jwtToken);
 }
 
+/**
+ * Create a 201 response from input.
+ * @param response response body
+ */
 export const api201 = (response: unknown) => {
   return {
     statusCode: 201,
+    body: JSON.stringify(response),
+  };
+};
+
+/**
+ * Create a 200 response from input.
+ * @param response response body
+ */
+export const api200 = (response: unknown) => {
+  return {
+    statusCode: 200,
     body: JSON.stringify(response),
   };
 };

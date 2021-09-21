@@ -60,6 +60,20 @@ functions:
           - dynamodb:UpdateItem
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.USER_TABLE}
 
+  getUser:
+    handler: src/lambda/http/getUser.handler
+    events:
+      - http:
+          method: get
+          path: user
+          cors: true
+          authorizer: Auth
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:Query
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.USER_TABLE}
+
 resources:
   Resources:
     GatewayResponseDefault4XX:
