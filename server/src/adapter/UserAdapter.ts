@@ -38,7 +38,7 @@ export class UserAdapter {
     userId: string,
     userName: string,
     avatarId: string
-  ): Promise<void> {
+  ): Promise<string> {
     const handleError = (error: AWSError) => {
       if (error) {
         throw new Error("Error " + error);
@@ -56,6 +56,8 @@ export class UserAdapter {
       },
       handleError
     );
+
+    return `https://${this.AVATAR_BUCKET}.s3.amazonaws.com/${avatarId}`;
   }
 
   static async getUser(userId: string): Promise<User> {

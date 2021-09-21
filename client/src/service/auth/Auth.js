@@ -1,5 +1,6 @@
 import auth0 from 'auth0-js';
 import { authConfig } from './config';
+import {UserStore} from "../UserStore";
 
 export default class Auth {
   accessToken;
@@ -28,12 +29,12 @@ export default class Auth {
 
   login() {
     this.auth0.authorize();
+    return UserStore.init();
   }
 
   handleAuthentication() {
     this.auth0.parseHash((err, authResult) => {
       if (authResult && authResult.accessToken && authResult.idToken) {
-        console.log('Access token: ', authResult.accessToken)
         console.log('id token: ', authResult.idToken)
         this.setSession(authResult);
       } else if (err) {
@@ -62,11 +63,10 @@ export default class Auth {
     this.idToken = authResult.idToken;
     this.expiresAt = expiresAt;
 
-    console.log('WWW foo', authResult);
-
-
-    // navigate to the home route
-    this.history.replace('/');
+    UserStore.init().then(() => {
+      // navigate to the home route
+      this.history.replace('/');
+    });
   }
 
   renewSession() {

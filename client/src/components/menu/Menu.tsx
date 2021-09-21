@@ -45,6 +45,7 @@ function Login({ auth }: { auth: Auth }) {
   const handleLogin = () => {
     auth.login();
   };
+
   return (
     <Button color="inherit" onClick={handleLogin}>
       Login

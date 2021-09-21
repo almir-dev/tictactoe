@@ -9,7 +9,7 @@ import { ProfilePage } from "./profile/ProfilePage";
 import { Box, Typography } from "@mui/material";
 
 const history = createHistory();
-const auth = new Auth(history);
+export const auth = new Auth(history);
 
 const handleAuthentication = (props: any) => {
   const location = props.location;

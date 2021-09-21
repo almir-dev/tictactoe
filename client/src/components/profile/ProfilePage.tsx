@@ -1,6 +1,7 @@
 import React, { ChangeEvent, useCallback, useState } from "react";
 import { Box, Paper, TextField, Typography } from "@mui/material";
 import Auth from "../../service/auth/Auth";
+import { ImageUpload } from "./image-upload/ImageUpload";
 
 export interface ProfilePageProps {
   /** Authentication service. */
@@ -14,6 +15,7 @@ export function ProfilePage({ auth }: ProfilePageProps) {
       <Paper elevation={3} sx={{ p: 5, mt: 2 }}>
         <Welcome userName={userName} />
         <UserName />
+        <ImageUpload />
       </Paper>
     </Box>
   );
@@ -45,6 +47,7 @@ function UserName() {
       variant="outlined"
       value={userName}
       onChange={handleTextChange}
+      sx={{ mb: 4 }}
     />
   );
 }

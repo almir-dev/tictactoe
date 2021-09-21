@@ -16,9 +16,13 @@ export class UserService {
     userName: string
   ): Promise<CreateUserAvatarResponse> {
     const avatarId = uuid.v4();
-    const avatarUrl = await UserAdapter.createAvatarUrl(avatarId);
-    await UserAdapter.updateUserAvatar(userId, userName, avatarId);
-    return Promise.resolve({ avatarUrl: avatarUrl });
+    const postUrl = await UserAdapter.createAvatarUrl(avatarId);
+    const avatarUrl = await UserAdapter.updateUserAvatar(
+      userId,
+      userName,
+      avatarId
+    );
+    return Promise.resolve({ avatarUrl, postUrl });
   }
 
   static async getUser(userId: string): Promise<User> {
