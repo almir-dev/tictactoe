@@ -5,6 +5,7 @@ import { CreateGameRequest } from "../../../../server/src/requests/CreateGameReq
 
 export interface Game {
   gameId: string;
+  gameName: string;
   userId: string;
   createdAt: number;
   available: boolean;

@@ -4,6 +4,7 @@ import { CreateGameRequest } from "../../../server/src/requests/CreateGameReques
 
 export interface GameViewModel {
   gameId: string;
+  gameName: string;
   host: string;
   createdAt: number;
   players: string;
@@ -35,6 +36,7 @@ class GameServiceImpl {
   private toViewModel(game: Game): GameViewModel {
     return {
       gameId: game.gameId,
+      gameName: game.gameName,
       host: game.userName,
       createdAt: game.createdAt,
       players: "1/2",

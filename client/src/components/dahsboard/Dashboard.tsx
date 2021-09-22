@@ -13,7 +13,7 @@ import { GameService, GameViewModel } from "../../service/GameService";
 import { GameCreator } from "./GameCreator";
 
 interface Column {
-  id: "gameId" | "host" | "createdAt" | "players" | "action";
+  id: "gameId" | "gameName" | "host" | "createdAt" | "players" | "action";
   label: string;
   minWidth?: number;
   align?: "right";
@@ -21,6 +21,7 @@ interface Column {
 
 const columns: readonly Column[] = [
   { id: "gameId", label: "Game number", minWidth: 10 },
+  { id: "gameName", label: "Room name", minWidth: 10 },
   { id: "host", label: "Host", minWidth: 10 },
   { id: "createdAt", label: "Created", minWidth: 10 },
   { id: "players", label: "Players", minWidth: 10 },
