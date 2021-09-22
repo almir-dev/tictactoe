@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -10,6 +10,7 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import Button from "@mui/material/Button";
 import { GameService, GameViewModel } from "../../service/GameService";
+import { GameCreator } from "./GameCreator";
 
 interface Column {
   id: "gameId" | "host" | "createdAt" | "players" | "action";
@@ -35,7 +36,14 @@ export function Dashboard() {
     });
   }, []);
 
-  return <GameTable games={games} />;
+  const handleHostGameClick = useCallback(() => {}, []);
+
+  return (
+    <Paper sx={{ width: "100%", overflow: "hidden", mt: 4 }}>
+      <GameCreator />
+      <GameTable games={games} />
+    </Paper>
+  );
 }
 
 export function GameTable({ games }: { games: GameViewModel[] }) {

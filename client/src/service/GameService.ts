@@ -1,4 +1,6 @@
 import { Game, GameResource } from "./rest/GameResource";
+import { UserStore } from "./UserStore";
+import { CreateGameRequest } from "../../../server/src/requests/CreateGameRequest";
 
 export interface GameViewModel {
   gameId: string;
@@ -8,9 +10,25 @@ export interface GameViewModel {
 }
 
 class GameServiceImpl {
-  async getAvailableGames(): Promise<GameViewModel[]> {
+  getAvailableGames(): Promise<GameViewModel[]> {
     return GameResource.getAvailableGames().then((result) => {
       return result.map(this.toViewModel);
+    });
+  }
+
+  createGame(gameName: string) {
+    const userId = UserStore.getUserId()!;
+    const userName = UserStore.getUserName()!;
+
+    const game: CreateGameRequest = {
+      userId,
+      userName,
+      gameName,
+      available: true,
+    };
+
+    return GameResource.createGame(game).then((result) => {
+      return this.toViewModel(result);
     });
   }
 
