@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useEffect, useState } from "react";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -8,33 +9,36 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import Button from "@mui/material/Button";
+import { GameService, GameViewModel } from "../../service/GameService";
 
 interface Column {
-  id: "userName" | "createdAt" | "action";
+  id: "gameId" | "host" | "createdAt" | "players" | "action";
   label: string;
   minWidth?: number;
   align?: "right";
 }
 
 const columns: readonly Column[] = [
-  { id: "userName", label: "Host", minWidth: 10 },
+  { id: "gameId", label: "Game number", minWidth: 10 },
+  { id: "host", label: "Host", minWidth: 10 },
   { id: "createdAt", label: "Created", minWidth: 10 },
-  { id: "action", label: "", minWidth: 10 },
+  { id: "players", label: "Players", minWidth: 10 },
+  { id: "action", label: "Join", minWidth: 10 },
 ];
 
-interface Data {
-  userId: string;
-  userName: string;
-  createdAt: string;
-}
-
-function createData(userId: string, userName: string, createdAt: string): Data {
-  return { userId, userName, createdAt };
-}
-
-const rows = [createData("1", "Johhny", new Date().toDateString())];
-
 export function Dashboard() {
+  const [games, setGames] = useState<GameViewModel[]>([]);
+
+  useEffect(() => {
+    GameService.getAvailableGames().then((result) => {
+      setGames(result);
+    });
+  }, []);
+
+  return <GameTable games={games} />;
+}
+
+export function GameTable({ games }: { games: GameViewModel[] }) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -67,7 +71,7 @@ export function Dashboard() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows
+            {games
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row) => {
                 return (
@@ -75,10 +79,13 @@ export function Dashboard() {
                     hover
                     role="checkbox"
                     tabIndex={-1}
-                    key={row.userId}
+                    key={row.gameId}
                   >
                     {columns.map((column) => {
-                      return <CellRenderer column={column} row={row} />;
+                      const key = `${row.gameId}-${column.id}`;
+                      return (
+                        <CellRenderer column={column} row={row} key={key} />
+                      );
                     })}
                   </TableRow>
                 );
@@ -89,7 +96,7 @@ export function Dashboard() {
       <TablePagination
         rowsPerPageOptions={[10, 25, 100]}
         component="div"
-        count={rows.length}
+        count={games.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
@@ -99,7 +106,7 @@ export function Dashboard() {
   );
 }
 
-function CellRenderer({ column, row }: { column: Column; row: Data }) {
+function CellRenderer({ column, row }: { column: Column; row: GameViewModel }) {
   if (column.id === "action") {
     return (
       <TableCell

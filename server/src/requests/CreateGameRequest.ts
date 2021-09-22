@@ -6,8 +6,6 @@ export interface CreateGameRequest {
   userId: string;
   /* username of the user. */
   userName: string;
-  /* Date of creation. */
-  createAt: number;
   /* Name of the session. */
   gameName: string;
   /* Flag indicating whether a game is available for joining. */

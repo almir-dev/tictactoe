@@ -6,7 +6,8 @@ import { Game } from "../models/Game";
 export class GameService {
   static async createGame(createGameRequest: CreateGameRequest): Promise<Game> {
     const gameId = uuid.v4();
-    const game = GameAdapter.createGame(gameId, createGameRequest);
+    const createdAt = new Date().getTime();
+    const game = GameAdapter.createGame(gameId, createdAt, createGameRequest);
     return game;
   }
 

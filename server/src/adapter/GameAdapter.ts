@@ -10,11 +10,13 @@ export class GameAdapter {
 
   static async createGame(
     gameId: string,
+    createdAt: number,
     createGameRequest: CreateGameRequest
   ): Promise<Game> {
     const Item = {
       ...createGameRequest,
       gameId,
+      createdAt
     };
     const params = {
       TableName: this.GAME_TABLE,
