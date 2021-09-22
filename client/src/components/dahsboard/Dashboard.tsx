@@ -30,17 +30,23 @@ const columns: readonly Column[] = [
 export function Dashboard() {
   const [games, setGames] = useState<GameViewModel[]>([]);
 
-  useEffect(() => {
+  const reloadGames = () => {
     GameService.getAvailableGames().then((result) => {
       setGames(result);
     });
-  }, []);
+  };
 
-  const handleHostGameClick = useCallback(() => {}, []);
+  useEffect(() => {
+    reloadGames();
+  }, [reloadGames]);
+
+  const handleGameCreated = useCallback(() => {
+    reloadGames();
+  }, []);
 
   return (
     <Paper sx={{ width: "100%", overflow: "hidden", mt: 4 }}>
-      <GameCreator />
+      <GameCreator onGameCreated={handleGameCreated} />
       <GameTable games={games} />
     </Paper>
   );
@@ -63,7 +69,7 @@ export function GameTable({ games }: { games: GameViewModel[] }) {
 
   return (
     <Paper sx={{ width: "100%", overflow: "hidden", mt: 4 }}>
-      <TableContainer sx={{ maxHeight: 440 }}>
+      <TableContainer sx={{ maxHeight: 1200 }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>

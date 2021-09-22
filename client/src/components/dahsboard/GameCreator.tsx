@@ -5,18 +5,52 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
-import React, { useState } from "react";
+import React, { ChangeEvent, useCallback, useState } from "react";
+import { GameService } from "../../service/GameService";
+import { CircularProgress } from "@mui/material";
 
-export function GameCreator() {
+export interface GameCreatorProps {
+  onGameCreated: () => void;
+}
+
+export function GameCreator({ onGameCreated }: GameCreatorProps) {
+  const [roomName, setRoomName] = useState("");
+  const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
   };
 
-  const handleClose = () => {
+  const handleHost = useCallback(() => {
+    setLoading(true);
+    GameService.createGame(roomName).then(() => {
+      setOpen(false);
+      setLoading(false);
+      onGameCreated();
+    });
+  }, []);
+
+  const handleClose = useCallback(() => {
+    setLoading(false);
     setOpen(false);
-  };
+  }, []);
+
+  const handleRoomNameChange = useCallback(
+    (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      setRoomName(event.target.value);
+    },
+    []
+  );
+
+  const actionSection = loading ? (
+    <CircularProgress />
+  ) : (
+    <>
+      <Button onClick={handleClose}>Cancel</Button>
+      <Button onClick={handleHost}>Host</Button>
+    </>
+  );
 
   return (
     <div>
@@ -41,12 +75,11 @@ export function GameCreator() {
             type="text"
             fullWidth
             variant="standard"
+            value={roomName}
+            onChange={handleRoomNameChange}
           />
         </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleClose}>Host</Button>
-        </DialogActions>
+        <DialogActions>{actionSection}</DialogActions>
       </Dialog>
     </div>
   );
