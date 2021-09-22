@@ -89,6 +89,21 @@ functions:
           - dynamodb:PutItem
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.GAME_TABLE}
 
+  getGames:
+    handler: src/lambda/http/getGames.handler
+    events:
+      - http:
+          method: get
+          path: game
+          cors: true
+          authorizer: Auth
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:Query
+          - dynamodb:Scan
+
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.GAME_TABLE}
 resources:
   Resources:
     GatewayResponseDefault4XX:

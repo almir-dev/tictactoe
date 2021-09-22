@@ -1,7 +1,7 @@
 import { DocumentClient } from "aws-sdk/clients/dynamodb";
-import { User } from "../models/User";
 import { createDynamoDBClient } from "./utils";
 import { CreateGameRequest } from "../requests/CreateGameRequest";
+import { Game } from "../models/Game";
 
 export class GameAdapter {
   private static readonly DOCUMENT_CLIENT: DocumentClient =
@@ -11,7 +11,7 @@ export class GameAdapter {
   static async createGame(
     gameId: string,
     createGameRequest: CreateGameRequest
-  ): Promise<User> {
+  ): Promise<Game> {
     const Item = {
       ...createGameRequest,
       gameId,
@@ -22,6 +22,20 @@ export class GameAdapter {
     };
 
     this.DOCUMENT_CLIENT.put(params).promise();
-    return createGameRequest;
+    return Item;
+  }
+
+  static async getGames(): Promise<Game[]> {
+    const result = this.DOCUMENT_CLIENT.scan({
+      TableName: this.GAME_TABLE,
+      FilterExpression: "available = :active",
+      ExpressionAttributeValues: {
+        ":active": true,
+      },
+    }).promise();
+
+    return result.then((result) => {
+      return result.Items as unknown as Game[];
+    });
   }
 }
