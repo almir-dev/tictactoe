@@ -29,7 +29,7 @@ functions:
     handler: src/lambda/auth/auth0Authorizer.handler
 
   CreateUser:
-    handler: src/lambda/http/createUser.handler
+    handler: src/lambda/http/user/createUser.handler
     events:
       - http:
           method: post
@@ -43,7 +43,7 @@ functions:
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.USER_TABLE}
 
   CreateUserAvatar:
-    handler: src/lambda/http/createUserAvatar.handler
+    handler: src/lambda/http/user/createUserAvatar.handler
     events:
       - http:
           method: post
@@ -62,7 +62,7 @@ functions:
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.USER_TABLE}
 
   getUser:
-    handler: src/lambda/http/getUser.handler
+    handler: src/lambda/http/user/getUser.handler
     events:
       - http:
           method: get
@@ -76,7 +76,7 @@ functions:
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.USER_TABLE}
 
   CreateGame:
-    handler: src/lambda/http/createGame.handler
+    handler: src/lambda/http/game/createGame.handler
     events:
       - http:
           method: post
@@ -90,7 +90,7 @@ functions:
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.GAME_TABLE}
 
   getGames:
-    handler: src/lambda/http/getGames.handler
+    handler: src/lambda/http/game/getGames.handler
     events:
       - http:
           method: get
@@ -104,6 +104,7 @@ functions:
           - dynamodb:Scan
 
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.GAME_TABLE}
+
 resources:
   Resources:
     GatewayResponseDefault4XX:

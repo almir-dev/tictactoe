@@ -1,5 +1,30 @@
 import { APIGatewayProxyEvent } from "aws-lambda";
-import { parseUserId } from "../auth/utils";
+import { cors, httpErrorHandler } from "middy/middlewares";
+import { decode } from "jsonwebtoken";
+import { JwtPayload } from "./auth/JwtPayload";
+
+/**
+ * Parse a JWT token and return a getUser id
+ * @param jwtToken JWT token to parse
+ * @returns a getUser id from the JWT token
+ */
+export function parseUserId(jwtToken: string): string {
+  const decodedJwt = decode(jwtToken) as JwtPayload;
+  return decodedJwt.sub;
+}
+
+/**
+ * Parse an APIGatewayProxy's event and return a JWT token
+ * @param event APIGatewayProxyEvent
+ * @returns JWT token
+ */
+export function decodeJWTFromAPIGatewayEvent(
+  event: APIGatewayProxyEvent
+): string {
+  const authorization = event.headers.Authorization;
+  const split = authorization.split(" ");
+  return split[1];
+}
 
 /**
  * Get a user id from an API Gateway event
@@ -7,11 +32,8 @@ import { parseUserId } from "../auth/utils";
  *
  * @returns userId from a JWT token
  */
-export function getUserId(event: APIGatewayProxyEvent): string {
-  const authorization = event.headers.Authorization;
-  const split = authorization.split(" ");
-  const jwtToken = split[1];
-
+export function extractUserId(event: APIGatewayProxyEvent) {
+  const jwtToken = decodeJWTFromAPIGatewayEvent(event);
   return parseUserId(jwtToken);
 }
 
@@ -35,4 +57,9 @@ export const api200 = (response: unknown) => {
     statusCode: 200,
     body: JSON.stringify(response),
   };
+};
+
+/* middyfy handle with cors and error handler. */
+export const middyfy = (handler) => {
+  handler.use(cors({ credentials: true })).use(httpErrorHandler());
 };

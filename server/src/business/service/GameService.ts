@@ -1,7 +1,7 @@
-import { CreateGameRequest } from "../requests/CreateGameRequest";
+import { CreateGameRequest } from "../models/requests/CreateGameRequest";
 import { GameAdapter } from "../adapter/GameAdapter";
 import * as uuid from "uuid";
-import { Game } from "../models/Game";
+import { Game } from "../models/projections/Game";
 
 export class GameService {
   static async createGame(createGameRequest: CreateGameRequest): Promise<Game> {

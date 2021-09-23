@@ -1,6 +1,6 @@
 import { Game, GameResource } from "./rest/GameResource";
 import { UserStore } from "./UserStore";
-import { CreateGameRequest } from "../../../server/src/requests/CreateGameRequest";
+import { CreateGameRequest } from "../../../server/src/business/models/requests/CreateGameRequest";
 
 export interface GameViewModel {
   gameId: string;

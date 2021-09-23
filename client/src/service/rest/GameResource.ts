@@ -1,7 +1,7 @@
 import Axios from "axios";
 import { apiEndpoint } from "../auth/config";
 import { auth } from "../../components/App";
-import { CreateGameRequest } from "../../../../server/src/requests/CreateGameRequest";
+import { CreateGameRequest } from "../../../../server/src/business/models/requests/CreateGameRequest";
 
 export interface Game {
   gameId: string;

@@ -1,7 +1,7 @@
 import { DocumentClient } from "aws-sdk/clients/dynamodb";
 import { createDynamoDBClient } from "./utils";
-import { CreateGameRequest } from "../requests/CreateGameRequest";
-import { Game } from "../models/Game";
+import { CreateGameRequest } from "../models/requests/CreateGameRequest";
+import { Game } from "../models/projections/Game";
 
 export class GameAdapter {
   private static readonly DOCUMENT_CLIENT: DocumentClient =
@@ -16,7 +16,7 @@ export class GameAdapter {
     const Item = {
       ...createGameRequest,
       gameId,
-      createdAt
+      createdAt,
     };
     const params = {
       TableName: this.GAME_TABLE,
