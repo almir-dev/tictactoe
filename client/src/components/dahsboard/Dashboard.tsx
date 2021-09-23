@@ -31,11 +31,11 @@ const columns: readonly Column[] = [
 export function Dashboard() {
   const [games, setGames] = useState<GameViewModel[]>([]);
 
-  const reloadGames = () => {
+  const reloadGames = useCallback(() => {
     GameService.getAvailableGames().then((result) => {
       setGames(result);
     });
-  };
+  }, []);
 
   useEffect(() => {
     reloadGames();
@@ -43,7 +43,7 @@ export function Dashboard() {
 
   const handleGameCreated = useCallback(() => {
     reloadGames();
-  }, []);
+  }, [reloadGames]);
 
   return (
     <Paper sx={{ width: "100%", overflow: "hidden", mt: 4 }}>

@@ -33,6 +33,14 @@ class GameServiceImpl {
     });
   }
 
+  /**
+   * Deletes a game with the given gameId.
+   * @param gameId gameId
+   */
+  deleteGame(gameId: string) {
+    return GameResource.deleteGame(gameId);
+  }
+
   private toViewModel(game: Game): GameViewModel {
     return {
       gameId: game.gameId,

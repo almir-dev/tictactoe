@@ -38,6 +38,21 @@ class GameResourceImpl {
 
     return result.data;
   }
+
+  /**
+   * Deletes a game with the given gameId.
+   * @param gameId gameId
+   */
+  async deleteGame(gameId: string): Promise<Game> {
+    const result = await Axios.post(`${apiEndpoint}/game/${gameId}`, "", {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${auth.idToken}`,
+      },
+    });
+
+    return result.data;
+  }
 }
 
 export const GameResource = new GameResourceImpl();

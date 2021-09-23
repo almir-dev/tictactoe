@@ -29,7 +29,7 @@ export function GameCreator({ onGameCreated }: GameCreatorProps) {
       setLoading(false);
       onGameCreated();
     });
-  }, []);
+  }, [onGameCreated, roomName]);
 
   const handleClose = useCallback(() => {
     setLoading(false);
