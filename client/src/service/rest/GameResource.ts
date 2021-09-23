@@ -25,16 +25,12 @@ class GameResourceImpl {
   }
 
   async createGame(game: CreateGameRequest): Promise<Game> {
-    const result = await Axios.post(
-      `${apiEndpoint}/game`,
-      JSON.stringify(game),
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${auth.idToken}`,
-        },
-      }
-    );
+    const result = await Axios.post(`${apiEndpoint}/game`, JSON.stringify(game), {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${auth.idToken}`,
+      },
+    });
 
     return result.data;
   }
@@ -44,7 +40,7 @@ class GameResourceImpl {
    * @param gameId gameId
    */
   async deleteGame(gameId: string): Promise<Game> {
-    const result = await Axios.post(`${apiEndpoint}/game/${gameId}`, "", {
+    const result = await Axios.delete(`${apiEndpoint}/game/${gameId}`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${auth.idToken}`,

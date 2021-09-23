@@ -36,12 +36,9 @@ export function GameCreator({ onGameCreated }: GameCreatorProps) {
     setOpen(false);
   }, []);
 
-  const handleRoomNameChange = useCallback(
-    (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-      setRoomName(event.target.value);
-    },
-    []
-  );
+  const handleRoomNameChange = useCallback((event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setRoomName(event.target.value);
+  }, []);
 
   const actionSection = loading ? (
     <CircularProgress />
@@ -54,19 +51,13 @@ export function GameCreator({ onGameCreated }: GameCreatorProps) {
 
   return (
     <div>
-      <Button
-        variant="contained"
-        sx={{ overflow: "hidden", mt: 4, ml: 4 }}
-        onClick={handleClickOpen}
-      >
+      <Button variant="contained" sx={{ overflow: "hidden", mt: 4, ml: 4 }} onClick={handleClickOpen}>
         Host Game
       </Button>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Create Game Room</DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            Type in the name of the room, and start playing
-          </DialogContentText>
+          <DialogContentText>Type in the name of the room, and start playing</DialogContentText>
           <TextField
             autoFocus
             margin="dense"

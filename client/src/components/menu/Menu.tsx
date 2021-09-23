@@ -37,24 +37,14 @@ function Headline({ auth }: { auth: Auth }) {
   }, [history]);
 
   return (
-    <Typography
-      variant="h6"
-      component="div"
-      sx={{ flexGrow: 1, cursor: "pointer" }}
-    >
+    <Typography variant="h6" component="div" sx={{ flexGrow: 1, cursor: "pointer" }}>
       <span onClick={handleHomeNavigation}>Tic Tac Toe</span>
       <DashboardMenuItem auth={auth} onClick={handleDashboardNavigation} />
     </Typography>
   );
 }
 
-function DashboardMenuItem({
-  auth,
-  onClick,
-}: {
-  auth: Auth;
-  onClick: () => void;
-}) {
+function DashboardMenuItem({ auth, onClick }: { auth: Auth; onClick: () => void }) {
   if (!auth.isAuthenticated()) {
     return null;
   }

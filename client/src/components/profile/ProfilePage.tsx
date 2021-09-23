@@ -33,12 +33,9 @@ function Welcome({ userName }: { userName: string }) {
 function UserName() {
   const [userName, setUserName] = useState("");
 
-  const handleTextChange = useCallback(
-    (event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-      setUserName(event.target.value);
-    },
-    []
-  );
+  const handleTextChange = useCallback((event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+    setUserName(event.target.value);
+  }, []);
 
   return (
     <TextField

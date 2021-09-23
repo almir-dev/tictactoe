@@ -26,16 +26,12 @@ class UserResourceImpl {
   }
 
   async updateUserAvatar(userName: string): Promise<AvatarUpdate> {
-    const result = await Axios.post(
-      `${apiEndpoint}/user/${userName}/avatar`,
-      "",
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${auth.idToken}`,
-        },
-      }
-    );
+    const result = await Axios.post(`${apiEndpoint}/user/${userName}/avatar`, "", {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${auth.idToken}`,
+      },
+    });
 
     return result.data;
   }

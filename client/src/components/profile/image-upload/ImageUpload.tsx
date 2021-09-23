@@ -8,23 +8,20 @@ export function ImageUpload() {
   const [loading, setLoading] = useState(false);
   const [avatar, setAvatar] = useState(UserStore.getUserAvatar());
 
-  const handleFileChange = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      const files = event.target.files;
-      if (!files) {
-        return;
-      }
+  const handleFileChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
+    if (!files) {
+      return;
+    }
 
-      setLoading(true);
+    setLoading(true);
 
-      // @ts-ignore
-      UserService.updateUserAvatar(files[0]).then((avatarUrl) => {
-        setAvatar(avatarUrl);
-        setLoading(false);
-      });
-    },
-    []
-  );
+    // @ts-ignore
+    UserService.updateUserAvatar(files[0]).then((avatarUrl) => {
+      setAvatar(avatarUrl);
+      setLoading(false);
+    });
+  }, []);
 
   let avatarImage = avatar ? (
     <img src={avatar} alt={"nope"} width={238} height={238} />
@@ -53,12 +50,7 @@ export function ImageUpload() {
         {avatarImage}
       </Card>
 
-      <input
-        type="file"
-        accept="image/*"
-        placeholder="Image to upload"
-        onChange={handleFileChange}
-      />
+      <input type="file" accept="image/*" placeholder="Image to upload" onChange={handleFileChange} />
     </>
   );
 }
