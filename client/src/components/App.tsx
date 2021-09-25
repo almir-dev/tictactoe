@@ -40,7 +40,7 @@ export function App() {
           render={() => {
             return (
               <SecurePage auth={auth}>
-                <ProfilePage auth={auth} />
+                <ProfilePage />
               </SecurePage>
             );
           }}

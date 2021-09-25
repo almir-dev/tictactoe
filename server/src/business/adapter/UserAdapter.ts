@@ -58,11 +58,11 @@ export class UserAdapter {
     return attachmentUrl;
   }
 
-  static async updateUserAvatar(userId: string, userName: string, avatarId: string): Promise<string> {
+  static async updateUserAvatar(userId: string, avatarId: string): Promise<string> {
     this.DOCUMENT_CLIENT.update(
       {
         TableName: this.USER_TABLE,
-        Key: { userId, userName },
+        Key: { userId },
         UpdateExpression: "set avatar = :avatar",
         ExpressionAttributeValues: {
           ":avatar": `https://${this.AVATAR_BUCKET}.s3.amazonaws.com/${avatarId}`,

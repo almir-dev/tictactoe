@@ -24,8 +24,8 @@ class UserResourceImpl {
     return result.data;
   }
 
-  async updateUserAvatar(userName: string): Promise<AvatarUpdate> {
-    const result = await Axios.post(`${apiEndpoint}/user/${userName}/avatar`, "", getApiConfig());
+  async updateUserAvatar(): Promise<AvatarUpdate> {
+    const result = await Axios.post(`${apiEndpoint}/user/avatar`, "", getApiConfig());
     return result.data;
   }
 

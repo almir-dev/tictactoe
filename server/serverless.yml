@@ -61,7 +61,7 @@ functions:
     events:
       - http:
           method: post
-          path: user/{userName}/avatar
+          path: user/avatar
           cors: true
           authorizer: Auth
     iamRoleStatements:

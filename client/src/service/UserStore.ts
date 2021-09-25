@@ -31,6 +31,10 @@ class UserStoreImpl {
   setUserAvatar(url: string) {
     return sessionStorage.setItem("avatar", url);
   }
+
+  setUserName(userName: string) {
+    sessionStorage.setItem("userName", userName);
+  }
 }
 
 export const UserStore = new UserStoreImpl();

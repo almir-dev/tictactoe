@@ -1,17 +1,10 @@
 import React, { ChangeEvent, useCallback, useState } from "react";
 import { Box, Paper, TextField, Typography } from "@mui/material";
-import Auth from "../../service/auth/Auth";
 import { ImageUpload } from "./image-upload/ImageUpload";
 import { UserService } from "../../service/UserService";
 import { UserStore } from "../../service/UserStore";
 
-export interface ProfilePageProps {
-  /** Authentication service. */
-  auth: Auth;
-}
-
-export function ProfilePage({ auth }: ProfilePageProps) {
-  const userName = auth.getAccessToken();
+export function ProfilePage() {
   return (
     <Box>
       <Paper elevation={3} sx={{ p: 5, mt: 2 }}>
@@ -37,7 +30,9 @@ function UserName() {
 
   const handleTextChange = useCallback((event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
     setUserName(event.target.value);
-    UserService.updateUserName(event.target.value);
+    UserService.updateUserName(event.target.value).then(() => {
+      UserStore.setUserName(event.target.value);
+    });
   }, []);
 
   return (

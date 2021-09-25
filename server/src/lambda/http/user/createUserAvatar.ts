@@ -7,9 +7,7 @@ import { CreateUserAvatarResponse } from "../../../business/models/response/Crea
 
 export const handler = middy(async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
   const userId = extractUserId(event);
-  const userName = event.pathParameters.userName;
-
-  const response: CreateUserAvatarResponse = await UserService.createUserAvatar(userId, userName);
+  const response: CreateUserAvatarResponse = await UserService.createUserAvatar(userId);
 
   return api201(response);
 });
