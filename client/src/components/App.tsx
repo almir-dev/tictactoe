@@ -8,6 +8,7 @@ import { ApplicationLoading } from "./ApplicationLoading";
 import { ProfilePage } from "./profile/ProfilePage";
 import { Box, Typography } from "@mui/material";
 import { Dashboard } from "./dahsboard/Dashboard";
+import { GameBoard } from "./gameboard/GameBoard";
 
 const history = createHistory();
 export const auth = new Auth(history);
@@ -52,6 +53,16 @@ export function App() {
           return (
             <SecurePage auth={auth}>
               <Dashboard />
+            </SecurePage>
+          );
+        }}
+      />
+      <Route
+        path={"/gameboard/:gameId"}
+        render={() => {
+          return (
+            <SecurePage auth={auth}>
+              <GameBoard />
             </SecurePage>
           );
         }}

@@ -13,6 +13,7 @@ import Button from "@mui/material/Button";
 import { CircularProgress } from "@mui/material";
 import { DashboardContext, DashboardContextProps } from "./Dashboard";
 import { UserStore } from "../../service/UserStore";
+import { useHistory } from "react-router-dom";
 
 interface Column {
   id: "gameId" | "gameName" | "host" | "createdAt" | "players" | "join" | "delete";
@@ -106,7 +107,7 @@ function CellRenderer({ column, row }: { column: Column; row: GameViewModel }) {
   if (column.id === "join") {
     return (
       <TableCell key={column.id} align={column.align}>
-        <JoinGameButton />
+        <JoinGameButton row={row} />
       </TableCell>
     );
   }
@@ -151,9 +152,16 @@ export function DeleteGameButton({ row }: { row: GameViewModel }) {
   );
 }
 
-export function JoinGameButton() {
+export function JoinGameButton({ row }: { row: GameViewModel }) {
+  const dashboardContext = useContext<DashboardContextProps>(DashboardContext);
+  const history = useHistory();
+
+  const handleJoin = useCallback(() => {
+    history.push(`/gameboard/${row.gameId}`);
+  }, [dashboardContext]);
+
   return (
-    <Button variant="contained" color="success" sx={{ width: 150 }}>
+    <Button variant="contained" color="success" sx={{ width: 150 }} onClick={handleJoin}>
       Join
     </Button>
   );
