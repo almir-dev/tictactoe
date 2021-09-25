@@ -5,8 +5,12 @@ import { CreateUserAvatarResponse } from "../models/response/CreateUserAvatarRes
 import { User } from "../models/projections/User";
 
 export class UserService {
-  static async createUser(createUserRequest: CreateUserRequest) {
-    createUserRequest.avatar = undefined;
+  static async createUser(userId: string) {
+    const createUserRequest: CreateUserRequest = {
+      userName: "tictactoe" + uuid.v4(),
+      userId,
+    };
+
     const user = UserAdapter.createUser(createUserRequest);
     return user;
   }

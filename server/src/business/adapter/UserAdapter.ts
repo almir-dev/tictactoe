@@ -34,7 +34,7 @@ export class UserAdapter {
       {
         TableName: this.USER_TABLE,
         Key: {
-          userId
+          userId,
         },
         UpdateExpression: "set #userName = :n",
         ExpressionAttributeValues: {
