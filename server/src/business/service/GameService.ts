@@ -2,6 +2,10 @@ import { CreateGameRequest } from "../models/requests/CreateGameRequest";
 import { CreateFullGameRequest, GameAdapter } from "../adapter/GameAdapter";
 import * as uuid from "uuid";
 import { Game } from "../models/projections/Game";
+import {
+  FullUpdateGamePlayerStateRequest,
+  UpdateGamePlayerStateRequest,
+} from "../models/requests/UpdateGamePlayerStateRequest";
 
 export class GameService {
   /**
@@ -17,6 +21,7 @@ export class GameService {
       createdAt,
       players: [],
       gameBoardValues: [],
+      finished: false,
       ...createGameRequest,
     };
 
@@ -28,8 +33,8 @@ export class GameService {
    * Retrieves all active games.
    */
   static async getGames(): Promise<Game[]> {
-    const games = GameAdapter.getActiveGames();
-    return games;
+    const games = await GameAdapter.getActiveGames();
+    return games.filter((game) => game.players.length < 2);
   }
 
   /**
@@ -39,5 +44,20 @@ export class GameService {
    */
   static async deleteGame(userId: string, gameId: string): Promise<void> {
     return GameAdapter.deleteGame(userId, gameId);
+  }
+
+  /**
+   * Update the games players and active player values.
+   * @param updateGamePlayerState new player state
+   * @param gameId game id
+   * @param userId user id
+   */
+  static async updateGamePlayerState(
+    updateGamePlayerState: UpdateGamePlayerStateRequest,
+    gameId: string,
+    userId: string
+  ): Promise<void> {
+    const fullRequest: FullUpdateGamePlayerStateRequest = { ...updateGamePlayerState, gameId, userId };
+    return GameAdapter.updateGamePlayerState(fullRequest);
   }
 }

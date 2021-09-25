@@ -17,7 +17,7 @@ provider:
 
   environment:
     USER_TABLE: GameUser-${self:provider.stage}
-    GAME_TABLE: Game-${self:provider.stage}
+    GAME_TABLE: Game2-${self:provider.stage}
     AVATAR_BUCKET: user-avatar-images-${self:provider.stage}
 
   logs:
@@ -101,6 +101,20 @@ functions:
       - Effect: Allow
         Action:
           - dynamodb:PutItem
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.GAME_TABLE}
+
+  UpdateGamePlayerState:
+    handler: src/lambda/http/game/updateGamePlayerState.handler
+    events:
+      - http:
+          method: patch
+          path: game/{gameId}/players
+          cors: true
+          authorizer: Auth
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:UpdateItem
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.GAME_TABLE}
 
   getGames:

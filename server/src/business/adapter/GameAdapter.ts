@@ -2,6 +2,7 @@ import { DocumentClient } from "aws-sdk/clients/dynamodb";
 import { createDynamoDBClient } from "./utils";
 import { Game } from "../models/projections/Game";
 import { AWSError } from "aws-sdk";
+import { FullUpdateGamePlayerStateRequest } from "../models/requests/UpdateGamePlayerStateRequest";
 
 export interface CreateFullGameRequest {
   /* Id of the game*/
@@ -49,10 +50,6 @@ export class GameAdapter {
     const result = this.DOCUMENT_CLIENT.scan(
       {
         TableName: this.GAME_TABLE,
-        FilterExpression: "available = :active",
-        ExpressionAttributeValues: {
-          ":active": true,
-        },
       },
       this.ERROR_HANDLER
     ).promise();
@@ -60,6 +57,28 @@ export class GameAdapter {
     return result.then((result) => {
       return result.Items as unknown as Game[];
     });
+  }
+
+  static async updateGamePlayerState(updateGamePlayerState: FullUpdateGamePlayerStateRequest): Promise<void> {
+    const gameId = updateGamePlayerState.gameId;
+    const userId = updateGamePlayerState.userId;
+
+    this.DOCUMENT_CLIENT.update(
+      {
+        TableName: this.GAME_TABLE,
+        Key: { gameId, userId },
+        UpdateExpression: "set #players = :players, #activePlayer = :activePlayer",
+        ExpressionAttributeValues: {
+          ":players": updateGamePlayerState.players,
+          ":activePlayer": updateGamePlayerState.activePlayer,
+        },
+        ExpressionAttributeNames: {
+          "#players": "players",
+          "#activePlayer": "activePlayer",
+        },
+      },
+      this.ERROR_HANDLER
+    ).promise();
   }
 
   static async deleteGame(userId: string, gameId: string): Promise<void> {
