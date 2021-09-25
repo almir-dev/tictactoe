@@ -1,8 +1,28 @@
 import { DocumentClient } from "aws-sdk/clients/dynamodb";
 import { createDynamoDBClient } from "./utils";
-import { CreateGameRequest } from "../models/requests/CreateGameRequest";
 import { Game } from "../models/projections/Game";
 import { AWSError } from "aws-sdk";
+
+export interface CreateFullGameRequest {
+  /* Id of the game*/
+  gameId: string;
+  /* id of a user. `*/
+  userId: string;
+  /* username of the user. */
+  userName: string;
+  /* Name of the session. */
+  gameName: string;
+  /* values of the game board in 1d array. */
+  gameBoardValues: string[];
+  /* player user ids. */
+  players: string[];
+  /* active players id. */
+  activePlayer?: string;
+  /* timestamp of creation. */
+  createdAt: number;
+  /* flag indicating whether the game is finished or not. */
+  finished: boolean;
+}
 
 export class GameAdapter {
   private static readonly DOCUMENT_CLIENT: DocumentClient = createDynamoDBClient();
@@ -14,12 +34,8 @@ export class GameAdapter {
     }
   };
 
-  static async createGame(gameId: string, createdAt: number, createGameRequest: CreateGameRequest): Promise<Game> {
-    const Item = {
-      ...createGameRequest,
-      gameId,
-      createdAt,
-    };
+  static async createGame(gameFullRequest: CreateFullGameRequest): Promise<Game> {
+    const Item = gameFullRequest;
     const params = {
       TableName: this.GAME_TABLE,
       Item,

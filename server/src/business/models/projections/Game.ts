@@ -12,6 +12,12 @@ export interface Game {
   createdAt: number;
   /* Name of the session. */
   gameName: string;
-  /* Flag indicating whether a game is available for joining. */
-  available: boolean;
+  /* Ids of the users. */
+  players: string[];
+  /* values of the game board in 1d array. */
+  gameBoardValues: string[];
+  /* active players id. */
+  activePlayer?: string;
+  /** flag indicating whether the game is finished or not. */
+  finished: boolean;
 }

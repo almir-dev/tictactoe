@@ -8,6 +8,4 @@ export interface CreateGameRequest {
   userName: string;
   /* Name of the session. */
   gameName: string;
-  /* Flag indicating whether a game is available for joining. */
-  available: boolean;
 }
