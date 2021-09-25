@@ -2,6 +2,8 @@ import React, { ChangeEvent, useCallback, useState } from "react";
 import { Box, Paper, TextField, Typography } from "@mui/material";
 import Auth from "../../service/auth/Auth";
 import { ImageUpload } from "./image-upload/ImageUpload";
+import { UserService } from "../../service/UserService";
+import { UserStore } from "../../service/UserStore";
 
 export interface ProfilePageProps {
   /** Authentication service. */
@@ -13,7 +15,7 @@ export function ProfilePage({ auth }: ProfilePageProps) {
   return (
     <Box>
       <Paper elevation={3} sx={{ p: 5, mt: 2 }}>
-        <Welcome userName={userName} />
+        <Welcome />
         <UserName />
         <ImageUpload />
       </Paper>
@@ -21,8 +23,8 @@ export function ProfilePage({ auth }: ProfilePageProps) {
   );
 }
 
-function Welcome({ userName }: { userName: string }) {
-  const text = `Welcome ${userName}`;
+function Welcome() {
+  const text = `Welcome ${UserStore.getUserName()}`;
   return (
     <Typography variant="h6" component="div" sx={{ flexGrow: 1, mb: 2 }}>
       {text}
@@ -31,10 +33,11 @@ function Welcome({ userName }: { userName: string }) {
 }
 
 function UserName() {
-  const [userName, setUserName] = useState("");
+  const [userName, setUserName] = useState(UserStore.getUserName());
 
   const handleTextChange = useCallback((event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
     setUserName(event.target.value);
+    UserService.updateUserName(event.target.value);
   }, []);
 
   return (

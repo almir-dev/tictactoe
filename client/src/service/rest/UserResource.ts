@@ -29,6 +29,11 @@ class UserResourceImpl {
     return result.data;
   }
 
+  async updateUserName(userName: string): Promise<void> {
+    const request = JSON.stringify({ userName });
+    return await Axios.put(`${apiEndpoint}/user`, request, getApiConfig());
+  }
+
   async uploadImage(url: string, file: Buffer): Promise<void> {
     return await Axios.put(url, file);
   }

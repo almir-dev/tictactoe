@@ -12,6 +12,10 @@ class UserServiceImpl {
     });
   }
 
+  async updateUserName(userName: string): Promise<void> {
+    return UserResource.updateUserName(userName);
+  }
+
   /** Checks if logged in user exists and in the gameUserDB.*/
   async userExists(): Promise<boolean> {
     const user = await UserResource.getUser();
