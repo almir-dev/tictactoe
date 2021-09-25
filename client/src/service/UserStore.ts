@@ -17,7 +17,7 @@ class UserStoreImpl {
   }
 
   getUserName() {
-    return sessionStorage.getItem("userName");
+    return sessionStorage.getItem("userName")! || "";
   }
 
   getUserId() {
@@ -25,7 +25,7 @@ class UserStoreImpl {
   }
 
   getUserAvatar() {
-    return sessionStorage.getItem("avatar");
+    return sessionStorage.getItem("avatar") || undefined;
   }
 
   setUserAvatar(url: string) {
