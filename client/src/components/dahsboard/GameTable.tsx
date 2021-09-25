@@ -12,6 +12,7 @@ import TableBody from "@mui/material/TableBody";
 import Button from "@mui/material/Button";
 import { CircularProgress } from "@mui/material";
 import { DashboardContext, DashboardContextProps } from "./Dashboard";
+import { UserStore } from "../../service/UserStore";
 
 interface Column {
   id: "gameId" | "gameName" | "host" | "createdAt" | "players" | "join" | "delete";
@@ -134,6 +135,10 @@ export function DeleteGameButton({ row }: { row: GameViewModel }) {
     setLoading(true);
     dashboardContext.onDelete(row).catch(() => setLoading(false));
   }, [dashboardContext, row]);
+
+  if (row.hostId !== UserStore.getUserId()) {
+    return null;
+  }
 
   if (loading) {
     return <CircularProgress />;

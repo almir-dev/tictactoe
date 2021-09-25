@@ -8,6 +8,7 @@ export interface GameViewModel {
   host: string;
   createdAt: number;
   players: string;
+  hostId: string;
 }
 
 class GameServiceImpl {
@@ -48,6 +49,7 @@ class GameServiceImpl {
       host: game.userName,
       createdAt: game.createdAt,
       players: "1/2",
+      hostId: game.userId,
     };
   }
 }

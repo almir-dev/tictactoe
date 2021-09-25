@@ -4,6 +4,7 @@ import Paper from "@mui/material/Paper";
 import { GameService, GameViewModel } from "../../service/GameService";
 import { GameCreator } from "./GameCreator";
 import { GameTable } from "./GameTable";
+import { LinearProgress } from "@mui/material";
 
 export interface DashboardContextProps {
   onDelete: (row: GameViewModel) => Promise<void>;
@@ -17,11 +18,16 @@ export const DashboardContext = React.createContext<DashboardContextProps>({
 
 export function Dashboard() {
   const [games, setGames] = useState<GameViewModel[]>([]);
+  const [loading, setLoading] = useState(false);
 
   const reloadGames = useCallback(() => {
-    GameService.getAvailableGames().then((result) => {
-      setGames(result);
-    });
+    setLoading(true);
+    GameService.getAvailableGames()
+      .then((result) => {
+        setLoading(false);
+        setGames(result);
+      })
+      .catch(() => setLoading(false));
   }, []);
 
   useEffect(() => {
@@ -48,11 +54,13 @@ export function Dashboard() {
     onJoin: handleJoin,
   };
 
+  const content = loading ? <LinearProgress sx={{ mt: 10, mb: 10 }} /> : <GameTable games={games} />;
+
   return (
     <DashboardContext.Provider value={contextValue}>
       <Paper sx={{ width: "100%", overflow: "hidden", mt: 4 }}>
         <GameCreator onGameCreated={handleGameCreated} />
-        <GameTable games={games} />
+        {content}
       </Paper>
     </DashboardContext.Provider>
   );
