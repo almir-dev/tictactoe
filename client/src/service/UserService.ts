@@ -1,5 +1,5 @@
 import { UserStore } from "./UserStore";
-import { UserResource } from "./rest/UserResource";
+import { User, UserResource } from "./rest/UserResource";
 
 class UserServiceImpl {
   async updateUserAvatar(file: Buffer): Promise<string> {
@@ -10,6 +10,16 @@ class UserServiceImpl {
       UserStore.setUserAvatar(avatarUpdate.avatarUrl);
       return avatarUpdate.avatarUrl;
     });
+  }
+
+  /** Checks if logged in user exists and in the gameUserDB.*/
+  async userExists(): Promise<boolean> {
+    const user = await UserResource.getUser();
+    return !!user.userId;
+  }
+
+  async createUser(): Promise<User> {
+    return UserResource.createUser();
   }
 }
 

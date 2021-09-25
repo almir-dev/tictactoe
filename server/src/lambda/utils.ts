@@ -57,6 +57,16 @@ export const api200 = (response: unknown) => {
   };
 };
 
+/**
+ * Create a 204 response from input.
+ */
+export const api204 = () => {
+  return {
+    statusCode: 204,
+    body: "",
+  };
+};
+
 /* middyfy handle with cors and error handler. */
 export const middyfy = (handler) => {
   handler.use(cors({ credentials: true })).use(httpErrorHandler());

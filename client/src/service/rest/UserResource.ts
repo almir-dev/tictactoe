@@ -1,6 +1,6 @@
 import Axios from "axios";
-import {apiEndpoint} from "../auth/config";
-import {getApiConfig} from "./utils";
+import { apiEndpoint } from "../auth/config";
+import { getApiConfig } from "./utils";
 
 export interface User {
   userId: string;
@@ -15,7 +15,7 @@ export interface AvatarUpdate {
 
 class UserResourceImpl {
   async createUser(): Promise<User> {
-    const result = await Axios.post(`${apiEndpoint}/user`, '',  getApiConfig());
+    const result = await Axios.post(`${apiEndpoint}/user`, "", getApiConfig());
     return result.data;
   }
 
@@ -25,7 +25,7 @@ class UserResourceImpl {
   }
 
   async updateUserAvatar(userName: string): Promise<AvatarUpdate> {
-    const result = await Axios.post(`${apiEndpoint}/user/${userName}/avatar`, '', getApiConfig());
+    const result = await Axios.post(`${apiEndpoint}/user/${userName}/avatar`, "", getApiConfig());
     return result.data;
   }
 

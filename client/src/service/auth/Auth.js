@@ -1,6 +1,7 @@
-import auth0 from 'auth0-js';
-import { authConfig } from './config';
-import {UserStore} from "../UserStore";
+import auth0 from "auth0-js";
+import { authConfig } from "./config";
+import { UserStore } from "../UserStore";
+import { UserService } from "../UserService";
 
 export default class Auth {
   accessToken;
@@ -11,12 +12,12 @@ export default class Auth {
     domain: authConfig.domain,
     clientID: authConfig.clientId,
     redirectUri: authConfig.callbackUrl,
-    responseType: 'token id_token',
-    scope: 'openid'
+    responseType: "token id_token",
+    scope: "openid",
   });
 
   constructor(history) {
-    this.history = history
+    this.history = history;
 
     this.login = this.login.bind(this);
     this.logout = this.logout.bind(this);
@@ -29,16 +30,21 @@ export default class Auth {
 
   login() {
     this.auth0.authorize();
-    return UserStore.init();
   }
 
-  handleAuthentication() {
-    this.auth0.parseHash((err, authResult) => {
+  async handleAuthentication() {
+    this.auth0.parseHash(async (err, authResult) => {
       if (authResult && authResult.accessToken && authResult.idToken) {
-        console.log('id token: ', authResult.idToken)
+        console.log("id token: ", authResult.idToken);
         this.setSession(authResult);
+
+        const userExists = await UserService.userExists();
+        if (!userExists) {
+          await UserService.createUser();
+        }
+        await UserStore.init();
       } else if (err) {
-        this.history.replace('/');
+        this.history.replace("/");
         console.log(err);
         alert(`Error: ${err.error}. Check the console for further details.`);
       }
@@ -55,29 +61,29 @@ export default class Auth {
 
   setSession(authResult) {
     // Set isLoggedIn flag in localStorage
-    localStorage.setItem('isLoggedIn', 'true');
+    localStorage.setItem("isLoggedIn", "true");
 
     // Set the time that the access token will expire at
-    let expiresAt = (authResult.expiresIn * 1000) + new Date().getTime();
+    let expiresAt = authResult.expiresIn * 1000 + new Date().getTime();
     this.accessToken = authResult.accessToken;
     this.idToken = authResult.idToken;
     this.expiresAt = expiresAt;
 
     UserStore.init().then(() => {
       // navigate to the home route
-      this.history.replace('/');
+      this.history.replace("/");
     });
   }
 
   renewSession() {
     this.auth0.checkSession({}, (err, authResult) => {
-       if (authResult && authResult.accessToken && authResult.idToken) {
-         this.setSession(authResult);
-       } else if (err) {
-         this.logout();
-         console.log(err);
-         alert(`Could not get a new token (${err.error}: ${err.error_description}).`);
-       }
+      if (authResult && authResult.accessToken && authResult.idToken) {
+        this.setSession(authResult);
+      } else if (err) {
+        this.logout();
+        console.log(err);
+        alert(`Could not get a new token (${err.error}: ${err.error_description}).`);
+      }
     });
   }
 
@@ -88,14 +94,14 @@ export default class Auth {
     this.expiresAt = 0;
 
     // Remove isLoggedIn flag from localStorage
-    localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem("isLoggedIn");
 
     this.auth0.logout({
-      returnTo: window.location.origin
+      returnTo: window.location.origin,
     });
 
     // navigate to the home route
-    this.history.replace('/');
+    this.history.replace("/");
   }
 
   isAuthenticated() {
