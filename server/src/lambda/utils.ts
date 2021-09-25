@@ -18,9 +18,7 @@ export function parseUserId(jwtToken: string): string {
  * @param event APIGatewayProxyEvent
  * @returns JWT token
  */
-export function decodeJWTFromAPIGatewayEvent(
-  event: APIGatewayProxyEvent
-): string {
+export function decodeJWTFromAPIGatewayEvent(event: APIGatewayProxyEvent): string {
   const authorization = event.headers.Authorization;
   const split = authorization.split(" ");
   return split[1];

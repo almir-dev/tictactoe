@@ -16,7 +16,7 @@ provider:
   region: us-east-1
 
   environment:
-    USER_TABLE: User-${self:provider.stage}
+    USER_TABLE: GameUser-${self:provider.stage}
     GAME_TABLE: Game-${self:provider.stage}
     AVATAR_BUCKET: user-avatar-images-${self:provider.stage}
 
@@ -40,6 +40,20 @@ functions:
       - Effect: Allow
         Action:
           - dynamodb:PutItem
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.USER_TABLE}
+
+  UpdateUser:
+    handler: src/lambda/http/user/updateUser.handler
+    events:
+      - http:
+          method: put
+          path: user
+          cors: true
+          authorizer: Auth
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:UpdateItem
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.USER_TABLE}
 
   CreateUserAvatar:
@@ -138,15 +152,9 @@ resources:
         AttributeDefinitions:
           - AttributeName: userId
             AttributeType: S
-          - AttributeName: userName
-            AttributeType: S
-          - AttributeName: avatar
-            AttributeType: S
         KeySchema:
           - AttributeName: userId
             KeyType: HASH
-          - AttributeName: userName
-            KeyType: RANGE
         BillingMode: PAY_PER_REQUEST
         TableName: ${self:provider.environment.USER_TABLE}
 

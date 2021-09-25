@@ -11,17 +11,14 @@ export class UserService {
     return user;
   }
 
-  static async createUserAvatar(
-    userId: string,
-    userName: string
-  ): Promise<CreateUserAvatarResponse> {
+  static async updateUserName(userId: string, userName: string) {
+    return UserAdapter.updateUserName(userId, userName);
+  }
+
+  static async createUserAvatar(userId: string, userName: string): Promise<CreateUserAvatarResponse> {
     const avatarId = uuid.v4();
     const postUrl = await UserAdapter.createAvatarUrl(avatarId);
-    const avatarUrl = await UserAdapter.updateUserAvatar(
-      userId,
-      userName,
-      avatarId
-    );
+    const avatarUrl = await UserAdapter.updateUserAvatar(userId, userName, avatarId);
     return Promise.resolve({ avatarUrl, postUrl });
   }
 

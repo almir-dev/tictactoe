@@ -1,5 +1,5 @@
 /**
- * Fields in a request to create/update a single user.
+ * Fields in a request to create a single user.
  */
 export interface CreateUserRequest {
   /* id of a user. `*/

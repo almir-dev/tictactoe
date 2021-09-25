@@ -5,8 +5,7 @@ import { Game } from "../models/projections/Game";
 import { AWSError } from "aws-sdk";
 
 export class GameAdapter {
-  private static readonly DOCUMENT_CLIENT: DocumentClient =
-    createDynamoDBClient();
+  private static readonly DOCUMENT_CLIENT: DocumentClient = createDynamoDBClient();
   private static readonly GAME_TABLE = process.env.GAME_TABLE;
 
   private static readonly ERROR_HANDLER = (error: AWSError) => {
@@ -15,11 +14,7 @@ export class GameAdapter {
     }
   };
 
-  static async createGame(
-    gameId: string,
-    createdAt: number,
-    createGameRequest: CreateGameRequest
-  ): Promise<Game> {
+  static async createGame(gameId: string, createdAt: number, createGameRequest: CreateGameRequest): Promise<Game> {
     const Item = {
       ...createGameRequest,
       gameId,
