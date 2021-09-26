@@ -38,6 +38,13 @@ export class GameService {
   }
 
   /**
+   * Retrieves specific game.
+   */
+  static async getGame(gameId: string): Promise<Game> {
+    return GameAdapter.getGame(gameId);
+  }
+
+  /**
    * Delete a game for the active user.
    * @param userId userId
    * @param gameId gameId

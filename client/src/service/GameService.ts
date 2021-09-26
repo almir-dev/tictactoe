@@ -26,7 +26,6 @@ class GameServiceImpl {
       userId,
       userName,
       gameName,
-      available: true,
     };
 
     return GameResource.createGame(game).then((result) => {
@@ -40,6 +39,15 @@ class GameServiceImpl {
    */
   deleteGame(gameId: string) {
     return GameResource.deleteGame(gameId);
+  }
+
+  updateGamePlayerState(gameId: string): Promise<void> {
+    return GameResource.getGame(gameId).then((game) => {
+      const userId = UserStore.getUserId()!;
+      const players = [...game.players, userId];
+      const activePlayer = !game.activePlayer ? userId : undefined;
+      GameResource.updateGamePlayerState(gameId, players, activePlayer);
+    });
   }
 
   private toViewModel(game: Game): GameViewModel {

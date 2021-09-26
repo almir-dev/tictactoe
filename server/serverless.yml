@@ -147,6 +147,20 @@ functions:
           - dynamodb:DeleteItem
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.GAME_TABLE}
 
+  getGame:
+    handler: src/lambda/http/game/getGame.handler
+    events:
+      - http:
+          method: get
+          path: game/{gameId}
+          cors: true
+          authorizer: Auth
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:Query
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.GAME_TABLE}
+
 resources:
   Resources:
     GatewayResponseDefault4XX:

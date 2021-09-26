@@ -59,6 +59,23 @@ export class GameAdapter {
     });
   }
 
+  static async getGame(gameId: string): Promise<Game> {
+    const result = this.DOCUMENT_CLIENT.query(
+      {
+        TableName: this.GAME_TABLE,
+        KeyConditionExpression: "gameId = :gameId",
+        ExpressionAttributeValues: {
+          ":gameId": gameId,
+        },
+      },
+      this.ERROR_HANDLER
+    ).promise();
+
+    return result.then((result) => {
+      return result.Items[0] as unknown as Game;
+    });
+  }
+
   static async updateGamePlayerState(updateGamePlayerState: FullUpdateGamePlayerStateRequest): Promise<void> {
     const gameId = updateGamePlayerState.gameId;
     const userId = updateGamePlayerState.userId;
