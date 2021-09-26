@@ -21,7 +21,6 @@ export class GameService {
       createdAt,
       players: [],
       gameBoardValues: [],
-      finished: false,
       ...createGameRequest,
     };
 

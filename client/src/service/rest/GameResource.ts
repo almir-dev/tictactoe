@@ -34,7 +34,7 @@ class GameResourceImpl {
     return result.data;
   }
 
-  async updateGamePlayerState(gameId: string, players: string[], activePlayer?: string): Promise<void> {
+  async updateGamePlayerState(gameId: string, players: string[], activePlayer: string | null): Promise<void> {
     const request = JSON.stringify({ players, activePlayer });
     return await Axios.patch(`${apiEndpoint}/game/${gameId}/players`, request, getApiConfig());
   }
@@ -44,7 +44,7 @@ class GameResourceImpl {
    * @param gameId game id
    */
   async getGame(gameId: string): Promise<Game> {
-    const result = await Axios.get(`${apiEndpoint}`, getApiConfig());
+    const result = await Axios.get(`${apiEndpoint}/game/${gameId}`, getApiConfig());
     return result.data;
   }
 }

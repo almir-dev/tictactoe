@@ -1,4 +1,4 @@
-import { GameViewModel } from "../../service/GameService";
+import { GameService, GameViewModel } from "../../service/GameService";
 import * as React from "react";
 import { useCallback, useContext, useState } from "react";
 import Paper from "@mui/material/Paper";
@@ -157,7 +157,9 @@ export function JoinGameButton({ row }: { row: GameViewModel }) {
   const history = useHistory();
 
   const handleJoin = useCallback(() => {
-    history.push(`/gameboard/${row.gameId}`);
+    GameService.joinGame(row.gameId).then(() => {
+      history.push(`/gameboard/${row.gameId}`);
+    });
   }, [dashboardContext]);
 
   return (

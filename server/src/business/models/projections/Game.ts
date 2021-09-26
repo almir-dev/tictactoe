@@ -18,6 +18,4 @@ export interface Game {
   gameBoardValues: string[];
   /* active players id. */
   activePlayer?: string;
-  /** flag indicating whether the game is finished or not. */
-  finished: boolean;
 }

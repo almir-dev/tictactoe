@@ -41,11 +41,15 @@ class GameServiceImpl {
     return GameResource.deleteGame(gameId);
   }
 
-  updateGamePlayerState(gameId: string): Promise<void> {
+  /**
+   * Adds current user to the game session.
+   * @param gameId game id
+   */
+  joinGame(gameId: string): Promise<void> {
     return GameResource.getGame(gameId).then((game) => {
       const userId = UserStore.getUserId()!;
       const players = [...game.players, userId];
-      const activePlayer = !game.activePlayer ? userId : undefined;
+      const activePlayer = !game.activePlayer ? userId : null;
       GameResource.updateGamePlayerState(gameId, players, activePlayer);
     });
   }

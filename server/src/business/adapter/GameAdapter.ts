@@ -21,8 +21,6 @@ export interface CreateFullGameRequest {
   activePlayer?: string;
   /* timestamp of creation. */
   createdAt: number;
-  /* flag indicating whether the game is finished or not. */
-  finished: boolean;
 }
 
 export class GameAdapter {
@@ -87,7 +85,7 @@ export class GameAdapter {
         UpdateExpression: "set #players = :players, #activePlayer = :activePlayer",
         ExpressionAttributeValues: {
           ":players": updateGamePlayerState.players,
-          ":activePlayer": updateGamePlayerState.activePlayer,
+          ":activePlayer": updateGamePlayerState.activePlayer || null,
         },
         ExpressionAttributeNames: {
           "#players": "players",
