@@ -57,13 +57,13 @@ export class GameService {
    * Update the games players and active player values.
    * @param updateGamePlayerState new player state
    * @param gameId game id
-   * @param userId user id
    */
   static async updateGamePlayerState(
     updateGamePlayerState: UpdateGamePlayerStateRequest,
-    gameId: string,
-    userId: string
+    gameId: string
   ): Promise<void> {
+    const game = await GameAdapter.getGame(gameId);
+
     const players: PlayerInfo[] = updateGamePlayerState.players.map((p) => {
       return {
         playerId: p,
@@ -73,7 +73,7 @@ export class GameService {
 
     const fullRequest: FullUpdateGamePlayerStateRequest = {
       gameId,
-      userId,
+      userId: game.userId,
       players,
       activePlayer: updateGamePlayerState.activePlayer,
     };

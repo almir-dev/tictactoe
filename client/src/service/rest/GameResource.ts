@@ -3,6 +3,11 @@ import { apiEndpoint } from "../auth/config";
 import { CreateGameRequest } from "../../../../server/src/business/models/requests/CreateGameRequest";
 import { getApiConfig } from "./utils";
 
+export interface PlayerInfo {
+  playerId: string;
+  lastHealthCheck: number;
+}
+
 export interface Game {
   gameId: string;
   gameName: string;
@@ -10,7 +15,7 @@ export interface Game {
   createdAt: number;
   available: boolean;
   userName: string;
-  players: string[];
+  players: PlayerInfo[];
   activePlayer?: string;
 }
 

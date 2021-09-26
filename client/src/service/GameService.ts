@@ -48,7 +48,8 @@ class GameServiceImpl {
   joinGame(gameId: string): Promise<void> {
     return GameResource.getGame(gameId).then((game) => {
       const userId = UserStore.getUserId()!;
-      const players = [...game.players, userId];
+      const existingPlayers = game.players.map((p) => p.playerId);
+      const players = [...existingPlayers, userId];
       const activePlayer = !game.activePlayer ? userId : null;
       GameResource.updateGamePlayerState(gameId, players, activePlayer);
     });

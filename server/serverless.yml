@@ -115,6 +115,7 @@ functions:
       - Effect: Allow
         Action:
           - dynamodb:UpdateItem
+          - dynamodb:Query
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.GAME_TABLE}
 
   getGames:
