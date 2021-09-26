@@ -55,6 +55,10 @@ class GameServiceImpl {
     });
   }
 
+  getGame(gameId: string): Promise<Game> {
+    return GameResource.getGame(gameId);
+  }
+
   private toViewModel(game: Game): GameViewModel {
     return {
       gameId: game.gameId,

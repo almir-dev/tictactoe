@@ -37,6 +37,11 @@ class UserResourceImpl {
   async uploadImage(url: string, file: Buffer): Promise<void> {
     return await Axios.put(url, file);
   }
+
+  async findUser(userId: string): Promise<User> {
+    const result = await Axios.get(`${apiEndpoint}/user/${encodeURI(userId)}`, getApiConfig());
+    return result.data;
+  }
 }
 
 export const UserResource = new UserResourceImpl();

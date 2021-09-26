@@ -89,6 +89,20 @@ functions:
           - dynamodb:Query
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.USER_TABLE}
 
+  findUser:
+    handler: src/lambda/http/user/findUser.handler
+    events:
+      - http:
+          method: get
+          path: user/{userId}
+          cors: true
+          authorizer: Auth
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:Query
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.USER_TABLE}
+
   CreateGame:
     handler: src/lambda/http/game/createGame.handler
     events:

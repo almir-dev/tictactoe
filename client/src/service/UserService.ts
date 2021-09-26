@@ -23,6 +23,16 @@ class UserServiceImpl {
   async createUser(): Promise<User> {
     return UserResource.createUser();
   }
+
+  async findUser(userId: string): Promise<User> {
+    let user;
+    try {
+      user = await UserResource.findUser(userId);
+    } catch (e) {
+      return UserService.findUser(userId);
+    }
+    return user;
+  }
 }
 
 export const UserService = new UserServiceImpl();
