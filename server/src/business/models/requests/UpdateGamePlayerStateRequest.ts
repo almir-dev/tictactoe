@@ -3,7 +3,14 @@ export interface UpdateGamePlayerStateRequest {
   activePlayer?: string;
 }
 
-export interface FullUpdateGamePlayerStateRequest extends UpdateGamePlayerStateRequest {
+export interface PlayerInfo {
+  playerId: string;
+  lastHealthCheck: number;
+}
+
+export interface FullUpdateGamePlayerStateRequest {
+  players: PlayerInfo[];
+  activePlayer?: string;
   gameId: string;
   userId: string;
 }

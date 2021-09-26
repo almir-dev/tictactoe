@@ -4,6 +4,7 @@ import * as uuid from "uuid";
 import { Game } from "../models/projections/Game";
 import {
   FullUpdateGamePlayerStateRequest,
+  PlayerInfo,
   UpdateGamePlayerStateRequest,
 } from "../models/requests/UpdateGamePlayerStateRequest";
 
@@ -63,7 +64,20 @@ export class GameService {
     gameId: string,
     userId: string
   ): Promise<void> {
-    const fullRequest: FullUpdateGamePlayerStateRequest = { ...updateGamePlayerState, gameId, userId };
+    const players: PlayerInfo[] = updateGamePlayerState.players.map((p) => {
+      return {
+        playerId: p,
+        lastHealthCheck: new Date().getTime(),
+      };
+    });
+
+    const fullRequest: FullUpdateGamePlayerStateRequest = {
+      gameId,
+      userId,
+      players,
+      activePlayer: updateGamePlayerState.activePlayer,
+    };
+
     return GameAdapter.updateGamePlayerState(fullRequest);
   }
 }
