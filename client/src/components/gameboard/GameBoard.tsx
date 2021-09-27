@@ -56,7 +56,7 @@ export function GameBoard() {
     };
   }, [gameId]);
 
-  const tableComponent = opponent && game ? <TicTacToeTable game={game} opponent={opponent} /> : <CircularProgress />;
+  const tableComponent = opponent && game ? "Game Table not yet implemented !" : <CircularProgress />;
 
   return (
     <Paper sx={{ width: "100%", overflow: "hidden", mt: 4 }}>
