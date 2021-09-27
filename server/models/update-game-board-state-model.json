@@ -1,0 +1,18 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "group",
+  "type": "object",
+  "properties": {
+    "gameBoardValues": {
+      "type": "array"
+    },
+    "activePlayer": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "gameBoardValues",
+    "activePlayer"
+  ],
+  "additionalProperties": false
+}

@@ -4,6 +4,8 @@ import * as middy from "middy";
 import { api201, extractUserId, middyfy } from "../../utils";
 import { CreateGameRequest } from "../../../business/models/requests/CreateGameRequest";
 import { GameService } from "../../../business/service/GameService";
+import { createLogger } from "../../../utils/logger";
+const logger = createLogger("user");
 
 export const handler = middy(async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
   const userId = extractUserId(event);
@@ -13,6 +15,13 @@ export const handler = middy(async (event: APIGatewayProxyEvent): Promise<APIGat
     userId,
   };
   const content = await GameService.createGame(createUserRequest);
+
+  logger.info("Successfully created game", {
+    userId: userId,
+    gameId: content.gameId,
+    gameName: content.gameName,
+    date: new Date().toISOString,
+  });
 
   return api201(content);
 });

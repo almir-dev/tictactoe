@@ -5,14 +5,10 @@
   "properties": {
     "userName": {
       "type": "string"
-    },
-    "avatar": {
-      "type": "string"
     }
   },
   "required": [
-    "userName",
-    "avatar"
+    "userName"
   ],
   "additionalProperties": false
 }

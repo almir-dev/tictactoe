@@ -23,6 +23,17 @@ provider:
   logs:
     restApi: true
 
+  tracing: # Enable AWS X-Ray Tracing
+    lambda: true
+    apiGateway: true
+    iamRoleStatements: # Permissions here or under every function to trace
+      - Effect: 'Allow'           # xray tracing permissions
+        Action:
+          - 'xray:PutTraceSegments'             # Trace Segments
+          - 'xray:PutTelemetryRecords'          # Telemetry
+        Resource:
+          - '*'
+
 functions:
 
   Auth:
@@ -50,6 +61,9 @@ functions:
           path: user
           cors: true
           authorizer: Auth
+          request:
+            schema:
+              application/json: ${file(models/update-user-model.json)}
     iamRoleStatements:
       - Effect: Allow
         Action:
@@ -111,6 +125,9 @@ functions:
           path: game
           cors: true
           authorizer: Auth
+          request:
+            schema:
+              application/json: ${file(models/create-game-model.json)}
     iamRoleStatements:
       - Effect: Allow
         Action:
@@ -125,6 +142,9 @@ functions:
           path: game/{gameId}/players
           cors: true
           authorizer: Auth
+          request:
+            schema:
+              application/json: ${file(models/update-game-player-state-model.json)}
     iamRoleStatements:
       - Effect: Allow
         Action:
@@ -140,6 +160,9 @@ functions:
           path: game/{gameId}/gameboard
           cors: true
           authorizer: Auth
+          request:
+            schema:
+              application/json: ${file(models/update-game-board-state-model.json)}
     iamRoleStatements:
       - Effect: Allow
         Action:

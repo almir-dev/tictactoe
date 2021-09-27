@@ -1,0 +1,17 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "group",
+  "type": "object",
+  "properties": {
+    "players": {
+      "type": "array"
+    },
+    "activePlayer": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "players"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "group",
+  "type": "object",
+  "properties": {
+    "userName": {
+      "type": "string"
+    },
+    "gameName": {
+      "type": "string"
+    },
+    "userId": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "userName",
+    "gameName",
+    "userId"
+  ],
+  "additionalProperties": false
+}
