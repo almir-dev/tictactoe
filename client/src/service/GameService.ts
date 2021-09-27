@@ -50,9 +50,13 @@ class GameServiceImpl {
       const userId = UserStore.getUserId()!;
       const existingPlayers = game.players.map((p) => p.playerId);
       const players = [...existingPlayers, userId];
-      const activePlayer = !game.activePlayer ? userId : null;
+      const activePlayer = game.activePlayer === null ? userId : null;
       GameResource.updateGamePlayerState(gameId, players, activePlayer);
     });
+  }
+
+  updateGameBoard(gameId: string, gameBoardValues: string[], activePlayer: string): Promise<void> {
+    return GameResource.updateGameBoardState(gameId, gameBoardValues, activePlayer);
   }
 
   getGame(gameId: string): Promise<Game> {

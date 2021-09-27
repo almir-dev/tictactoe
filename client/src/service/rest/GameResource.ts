@@ -44,6 +44,12 @@ class GameResourceImpl {
     return await Axios.patch(`${apiEndpoint}/game/${gameId}/players`, request, getApiConfig());
   }
 
+  async updateGameBoardState(gameId: string, gameBoardState: string[], activePlayer: string): Promise<void> {
+    const request = JSON.stringify({ gameBoardState, activePlayer });
+    console.log("WWW body", request);
+    return await Axios.patch(`${apiEndpoint}/game/${gameId}/gameboard`, request, getApiConfig());
+  }
+
   /**
    * Retrieves game with specified id.
    * @param gameId game id

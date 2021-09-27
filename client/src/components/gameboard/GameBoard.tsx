@@ -21,13 +21,11 @@ export function GameBoard() {
 
   const pollGame = useCallback(() => {
     GameService.getGame(gameId).then((result) => {
-      console.log("WWW reloading ...");
       if (result.players.length === 2 && !opponent) {
         setGame(game);
         const opponentId = result.players.filter((p) => p.playerId !== UserStore.getUserId())[0].playerId;
         UserService.findUser(opponentId).then((p) => {
           setOpponent(p);
-          console.log("WWW Stopping interval", interval);
           clearInterval(interval);
         });
       }
@@ -41,7 +39,6 @@ export function GameBoard() {
         const opponentId = result.players.filter((p) => p.playerId !== UserStore.getUserId())[0].playerId;
         UserService.findUser(opponentId).then((p) => {
           setOpponent(p);
-          console.log("WWW Stopping interval", interval);
           clearInterval(interval);
         });
       }
@@ -59,6 +56,8 @@ export function GameBoard() {
     };
   }, [gameId]);
 
+  const tableComponent = opponent && game ? <TicTacToeTable game={game} opponent={opponent} /> : <CircularProgress />;
+
   return (
     <Paper sx={{ width: "100%", overflow: "hidden", mt: 4 }}>
       <Grid container spacing={2}>
@@ -66,7 +65,7 @@ export function GameBoard() {
           <Player userName={UserStore.getUserName()} avatarUrl={UserStore.getUserAvatar()} />
         </Grid>
         <Grid item xs={6} sx={{ mt: 10 }}>
-          <TicTacToeTable />
+          {tableComponent}
         </Grid>
         <Grid item xs={3}>
           <Player userName={opponent?.userName} avatarUrl={opponent?.avatar} />

@@ -3,6 +3,7 @@ import { createDynamoDBClient } from "./utils";
 import { Game } from "../models/projections/Game";
 import { AWSError } from "aws-sdk";
 import { FullUpdateGamePlayerStateRequest } from "../models/requests/UpdateGamePlayerStateRequest";
+import { FullUpdateGameBoardStateRequest } from "../models/requests/UpdateGameBoardStateRequest";
 
 export interface CreateFullGameRequest {
   /* Id of the game*/
@@ -41,7 +42,17 @@ export class GameAdapter {
     };
 
     this.DOCUMENT_CLIENT.put(params, this.ERROR_HANDLER).promise();
-    return Item;
+
+    return {
+      gameId: Item.gameId,
+      userId: Item.userId,
+      userName: Item.userName,
+      createdAt: Item.createdAt,
+      gameName: Item.gameName,
+      players: [],
+      gameBoardValues: Item.gameBoardValues,
+      activePlayer: Item.activePlayer,
+    };
   }
 
   static async getActiveGames(): Promise<Game[]> {
@@ -89,6 +100,28 @@ export class GameAdapter {
         },
         ExpressionAttributeNames: {
           "#players": "players",
+          "#activePlayer": "activePlayer",
+        },
+      },
+      this.ERROR_HANDLER
+    ).promise();
+  }
+
+  static async updateGameBoardState(updateGameBoardState: FullUpdateGameBoardStateRequest): Promise<void> {
+    const gameId = updateGameBoardState.gameId;
+    const userId = updateGameBoardState.userId;
+
+    this.DOCUMENT_CLIENT.update(
+      {
+        TableName: this.GAME_TABLE,
+        Key: { gameId, userId },
+        UpdateExpression: "set #gameBoardValues = :gameBoardValues, #activePlayer = :activePlayer",
+        ExpressionAttributeValues: {
+          ":activePlayer": updateGameBoardState.activePlayer,
+          ":gameBoardValues": updateGameBoardState.gameBoardValues,
+        },
+        ExpressionAttributeNames: {
+          "#gameBoardValues": "gameBoardValues",
           "#activePlayer": "activePlayer",
         },
       },

@@ -1,6 +1,8 @@
 /**
  * Fields representing a game model.
  */
+import { PlayerInfo } from "../requests/UpdateGamePlayerStateRequest";
+
 export interface Game {
   /* id of the game. */
   gameId: string;
@@ -13,7 +15,7 @@ export interface Game {
   /* Name of the session. */
   gameName: string;
   /* Ids of the users. */
-  players: string[];
+  players: PlayerInfo[];
   /* values of the game board in 1d array. */
   gameBoardValues: string[];
   /* active players id. */

@@ -7,6 +7,10 @@ import {
   PlayerInfo,
   UpdateGamePlayerStateRequest,
 } from "../models/requests/UpdateGamePlayerStateRequest";
+import {
+  FullUpdateGameBoardStateRequest,
+  UpdateGameBoardStateRequest,
+} from "../models/requests/UpdateGameBoardStateRequest";
 
 export class GameService {
   /**
@@ -79,5 +83,26 @@ export class GameService {
     };
 
     return GameAdapter.updateGamePlayerState(fullRequest);
+  }
+
+  /**
+   * Update the game board.
+   * @param updateGameBoardStateRequest new board state
+   * @param gameId game id
+   */
+  static async updateGameBoardState(
+    updateGameBoardStateRequest: UpdateGameBoardStateRequest,
+    gameId: string
+  ): Promise<void> {
+    const game = await GameAdapter.getGame(gameId);
+
+    const fullRequest: FullUpdateGameBoardStateRequest = {
+      gameId,
+      userId: game.userId,
+      gameBoardValues: updateGameBoardStateRequest.gameBoardValues,
+      activePlayer: updateGameBoardStateRequest.activePlayer,
+    };
+
+    return GameAdapter.updateGameBoardState(fullRequest);
   }
 }
